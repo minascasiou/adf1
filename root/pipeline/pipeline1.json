@@ -45,15 +45,6 @@
 							},
 							{
 								"source": {
-									"name": "txnid",
-									"type": "String"
-								},
-								"sink": {
-									"path": "$['txnid']"
-								}
-							},
-							{
-								"source": {
 									"name": "customerid",
 									"type": "String"
 								},
