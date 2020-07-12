@@ -68,12 +68,6 @@
 					"referenceName": "CosmosDb1",
 					"type": "LinkedServiceReference"
 				},
-				"parameters": {
-					"mid": {
-						"type": "string",
-						"defaultValue": "0"
-					}
-				},
 				"annotations": [],
 				"type": "CosmosDbSqlApiCollection",
 				"schema": {
@@ -223,8 +217,8 @@
 								"mappings": [
 									{
 										"source": {
-											"type": "Int64",
-											"ordinal": 1
+											"name": "txnid",
+											"type": "String"
 										},
 										"sink": {
 											"path": "$['id']"
@@ -232,8 +226,8 @@
 									},
 									{
 										"source": {
-											"type": "String",
-											"ordinal": 2
+											"name": "customerid",
+											"type": "String"
 										},
 										"sink": {
 											"path": "$['customerid']"
@@ -241,8 +235,8 @@
 									},
 									{
 										"source": {
-											"type": "String",
-											"ordinal": 3
+											"name": "accountid",
+											"type": "String"
 										},
 										"sink": {
 											"path": "$['accountid']"
@@ -250,8 +244,8 @@
 									},
 									{
 										"source": {
-											"type": "String",
-											"ordinal": 10
+											"name": "category",
+											"type": "String"
 										},
 										"sink": {
 											"path": "$['category']"
@@ -259,8 +253,8 @@
 									},
 									{
 										"source": {
-											"type": "String",
-											"ordinal": 4
+											"name": "creationdate",
+											"type": "String"
 										},
 										"sink": {
 											"path": "$['creationdate']"
@@ -268,8 +262,8 @@
 									},
 									{
 										"source": {
-											"type": "String",
-											"ordinal": 5
+											"name": "creationdatetime",
+											"type": "String"
 										},
 										"sink": {
 											"path": "$['creationdatetime']"
@@ -277,8 +271,8 @@
 									},
 									{
 										"source": {
-											"type": "String",
-											"ordinal": 6
+											"name": "txnamountcurrency",
+											"type": "String"
 										},
 										"sink": {
 											"path": "$['txnamountcurrency']"
@@ -286,8 +280,8 @@
 									},
 									{
 										"source": {
-											"type": "String",
-											"ordinal": 8
+											"name": "runningbalancecurrency",
+											"type": "String"
 										},
 										"sink": {
 											"path": "$['runningbalancecurrency']"
@@ -295,8 +289,8 @@
 									},
 									{
 										"source": {
-											"type": "String",
-											"ordinal": 9
+											"name": "runningbalance",
+											"type": "String"
 										},
 										"sink": {
 											"path": "$['runningbalance']"
@@ -304,8 +298,8 @@
 									},
 									{
 										"source": {
-											"type": "String",
-											"ordinal": 7
+											"name": "txnamount",
+											"type": "String"
 										},
 										"sink": {
 											"path": "$['txnamount']"
@@ -313,8 +307,8 @@
 									},
 									{
 										"source": {
-											"type": "String",
-											"ordinal": 11
+											"name": "txndescription",
+											"type": "String"
 										},
 										"sink": {
 											"path": "$['txndescription']"
