@@ -218,7 +218,7 @@
 									{
 										"source": {
 											"name": "txnid",
-											"type": "String"
+											"type": "Int64"
 										},
 										"sink": {
 											"path": "$['id']"
@@ -290,7 +290,7 @@
 									{
 										"source": {
 											"name": "runningbalance",
-											"type": "String"
+											"type": "Double"
 										},
 										"sink": {
 											"path": "$['runningbalance']"
@@ -299,7 +299,7 @@
 									{
 										"source": {
 											"name": "txnamount",
-											"type": "String"
+											"type": "Double"
 										},
 										"sink": {
 											"path": "$['txnamount']"
