@@ -109,7 +109,7 @@
 					}
 				},
 				"typeProperties": {
-					"collectionName": "txns"
+					"collectionName": "txns2"
 				}
 			},
 			"dependsOn": [
