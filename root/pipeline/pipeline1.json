@@ -1,0 +1,163 @@
+{
+	"name": "pipeline1",
+	"properties": {
+		"activities": [
+			{
+				"name": "Copy data1",
+				"type": "Copy",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "DelimitedTextSource",
+						"storeSettings": {
+							"type": "AzureFileStorageReadSettings",
+							"recursive": true
+						},
+						"formatSettings": {
+							"type": "DelimitedTextReadSettings"
+						}
+					},
+					"sink": {
+						"type": "CosmosDbSqlApiSink",
+						"writeBehavior": "insert"
+					},
+					"enableStaging": false,
+					"translator": {
+						"type": "TabularTranslator",
+						"mappings": [
+							{
+								"source": {
+									"type": "Int64",
+									"ordinal": 1
+								},
+								"sink": {
+									"path": "$['id']"
+								}
+							},
+							{
+								"source": {
+									"type": "Int64",
+									"ordinal": 1
+								},
+								"sink": {
+									"path": "$['txnid']"
+								}
+							},
+							{
+								"source": {
+									"type": "String",
+									"ordinal": 2
+								},
+								"sink": {
+									"path": "$['customerid']"
+								}
+							},
+							{
+								"source": {
+									"type": "String",
+									"ordinal": 3
+								},
+								"sink": {
+									"path": "$['accountid']"
+								}
+							},
+							{
+								"source": {
+									"type": "String",
+									"ordinal": 10
+								},
+								"sink": {
+									"path": "$['category']"
+								}
+							},
+							{
+								"source": {
+									"type": "String",
+									"ordinal": 4
+								},
+								"sink": {
+									"path": "$['creationdate']"
+								}
+							},
+							{
+								"source": {
+									"type": "String",
+									"ordinal": 5
+								},
+								"sink": {
+									"path": "$['creationdatetime']"
+								}
+							},
+							{
+								"source": {
+									"type": "String",
+									"ordinal": 6
+								},
+								"sink": {
+									"path": "$['txnamountcurrency']"
+								}
+							},
+							{
+								"source": {
+									"type": "String",
+									"ordinal": 8
+								},
+								"sink": {
+									"path": "$['runningbalancecurrency']"
+								}
+							},
+							{
+								"source": {
+									"type": "String",
+									"ordinal": 9
+								},
+								"sink": {
+									"path": "$['runningbalance']"
+								}
+							},
+							{
+								"source": {
+									"type": "String",
+									"ordinal": 7
+								},
+								"sink": {
+									"path": "$['txnamount']"
+								}
+							},
+							{
+								"source": {
+									"type": "String",
+									"ordinal": 11
+								},
+								"sink": {
+									"path": "$['txndescription']"
+								}
+							}
+						]
+					}
+				},
+				"inputs": [
+					{
+						"referenceName": "DelimitedText1",
+						"type": "DatasetReference"
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "CosmosDbSqlApiCollection1",
+						"type": "DatasetReference"
+					}
+				]
+			}
+		],
+		"annotations": []
+	}
+}
