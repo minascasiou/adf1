@@ -45,15 +45,6 @@
 							},
 							{
 								"source": {
-									"type": "Int64",
-									"ordinal": 1
-								},
-								"sink": {
-									"path": "$['txnid']"
-								}
-							},
-							{
-								"source": {
 									"type": "String",
 									"ordinal": 2
 								},
