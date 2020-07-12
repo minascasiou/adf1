@@ -5,6 +5,12 @@
 			"referenceName": "CosmosDb1",
 			"type": "LinkedServiceReference"
 		},
+		"parameters": {
+			"mid": {
+				"type": "string",
+				"defaultValue": "0"
+			}
+		},
 		"annotations": [],
 		"type": "CosmosDbSqlApiCollection",
 		"schema": {
