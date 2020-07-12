@@ -10,7 +10,7 @@
 		"typeProperties": {
 			"location": {
 				"type": "AzureFileStorageLocation",
-				"fileName": "fintxns1k.csv"
+				"fileName": "fintxns1M.csv"
 			},
 			"columnDelimiter": ",",
 			"escapeChar": "\\",
