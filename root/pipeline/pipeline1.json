@@ -1,6 +1,7 @@
 {
 	"name": "pipeline1",
 	"properties": {
+		"description": "import csv 1k into Cosmos SQL as JSON document\nHaNeCan Finance SQL Container",
 		"activities": [
 			{
 				"name": "Copy data1",
