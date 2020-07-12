@@ -1,0 +1,27 @@
+{
+	"$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+	"contentVersion": "1.0.0.0",
+	"parameters": {
+		"factoryName": {
+			"value": "adf1cosmos"
+		},
+		"AzureFileStorage1_password": {
+			"value": ""
+		},
+		"CosmosDb1_connectionString": {
+			"value": ""
+		},
+		"AzureFileStorage1_properties_typeProperties_host": {
+			"value": "\\\\adfsourcefincsv.file.core.windows.net\\fin"
+		},
+		"AzureFileStorage1_properties_typeProperties_userId": {
+			"value": "Azure\\adfsourcefincsv"
+		},
+		"containerUri": {
+			"value": ""
+		},
+		"containerSasToken": {
+			"value": ""
+		}
+	}
+}
