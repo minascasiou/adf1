@@ -1,0 +1,156 @@
+{
+	"name": "pipeline1_toAWSDynamoDB",
+	"properties": {
+		"description": "import csv 1k into AWS Dynamo DB",
+		"activities": [
+			{
+				"name": "Copy data1",
+				"type": "Copy",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "DelimitedTextSource",
+						"storeSettings": {
+							"type": "AzureFileStorageReadSettings",
+							"recursive": true
+						},
+						"formatSettings": {
+							"type": "DelimitedTextReadSettings"
+						}
+					},
+					"sink": {
+						"type": "CosmosDbSqlApiSink",
+						"writeBehavior": "insert"
+					},
+					"enableStaging": false,
+					"translator": {
+						"type": "TabularTranslator",
+						"mappings": [
+							{
+								"source": {
+									"name": "txnid",
+									"type": "Int64"
+								},
+								"sink": {
+									"path": "$['id']"
+								}
+							},
+							{
+								"source": {
+									"name": "customerid",
+									"type": "String"
+								},
+								"sink": {
+									"path": "$['customerid']"
+								}
+							},
+							{
+								"source": {
+									"name": "accountid",
+									"type": "String"
+								},
+								"sink": {
+									"path": "$['accountid']"
+								}
+							},
+							{
+								"source": {
+									"name": "category",
+									"type": "String"
+								},
+								"sink": {
+									"path": "$['category']"
+								}
+							},
+							{
+								"source": {
+									"name": "creationdate",
+									"type": "String"
+								},
+								"sink": {
+									"path": "$['creationdate']"
+								}
+							},
+							{
+								"source": {
+									"name": "creationdatetime",
+									"type": "String"
+								},
+								"sink": {
+									"path": "$['creationdatetime']"
+								}
+							},
+							{
+								"source": {
+									"name": "txnamountcurrency",
+									"type": "String"
+								},
+								"sink": {
+									"path": "$['txnamountcurrency']"
+								}
+							},
+							{
+								"source": {
+									"name": "runningbalancecurrency",
+									"type": "String"
+								},
+								"sink": {
+									"path": "$['runningbalancecurrency']"
+								}
+							},
+							{
+								"source": {
+									"name": "runningbalance",
+									"type": "Double"
+								},
+								"sink": {
+									"path": "$['runningbalance']"
+								}
+							},
+							{
+								"source": {
+									"name": "txnamount",
+									"type": "Double"
+								},
+								"sink": {
+									"path": "$['txnamount']"
+								}
+							},
+							{
+								"source": {
+									"name": "txndescription",
+									"type": "String"
+								},
+								"sink": {
+									"path": "$['txndescription']"
+								}
+							}
+						]
+					}
+				},
+				"inputs": [
+					{
+						"referenceName": "DelimitedText1",
+						"type": "DatasetReference"
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "CosmosDbSqlApiCollection1",
+						"type": "DatasetReference"
+					}
+				]
+			}
+		],
+		"concurrency": 1,
+		"annotations": []
+	}
+}
