@@ -24,7 +24,7 @@
 						},
 						"formatSettings": {
 							"type": "DelimitedTextReadSettings",
-							"skipLineCount": 1
+							"skipLineCount": 0
 						}
 					},
 					"sink": {
@@ -37,7 +37,82 @@
 						"mappings": [
 							{
 								"sink": {
-									"path": "$"
+									"path": "$['id']"
+								}
+							},
+							{
+								"sink": {
+									"path": "$['txnid']"
+								}
+							},
+							{
+								"sink": {
+									"path": "$['customerid']"
+								}
+							},
+							{
+								"sink": {
+									"path": "$['accountid']"
+								}
+							},
+							{
+								"sink": {
+									"path": "$['categoryl1']"
+								}
+							},
+							{
+								"sink": {
+									"path": "$['categoryl2']"
+								}
+							},
+							{
+								"sink": {
+									"path": "$['categoryl3']"
+								}
+							},
+							{
+								"sink": {
+									"path": "$['creationdate']"
+								}
+							},
+							{
+								"sink": {
+									"path": "$['creationdateyyyymm']"
+								}
+							},
+							{
+								"sink": {
+									"path": "$['creationdatetime']"
+								}
+							},
+							{
+								"sink": {
+									"path": "$['txnamountcurrency']"
+								}
+							},
+							{
+								"sink": {
+									"path": "$['runningbalancecurrency']"
+								}
+							},
+							{
+								"sink": {
+									"path": "$['runningbalance']"
+								}
+							},
+							{
+								"sink": {
+									"path": "$['txnamount']"
+								}
+							},
+							{
+								"sink": {
+									"path": "$['merchantid']"
+								}
+							},
+							{
+								"sink": {
+									"path": "$['txndescription']"
 								}
 							}
 						]
@@ -51,7 +126,7 @@
 				],
 				"outputs": [
 					{
-						"referenceName": "CosmosDbSqlApiCollection1",
+						"referenceName": "CosmosDbSqlApiCollection2",
 						"type": "DatasetReference"
 					}
 				]
