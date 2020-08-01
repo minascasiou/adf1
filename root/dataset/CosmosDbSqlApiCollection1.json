@@ -7,44 +7,6 @@
 		},
 		"annotations": [],
 		"type": "CosmosDbSqlApiCollection",
-		"schema": {
-			"type": "object",
-			"properties": {
-				"txnid": {
-					"type": "integer"
-				},
-				"customerid": {
-					"type": "string"
-				},
-				"accountid": {
-					"type": "string"
-				},
-				"category": {
-					"type": "string"
-				},
-				"creationdate": {
-					"type": "integer"
-				},
-				"creationdatetime": {
-					"type": "string"
-				},
-				"txnamountcurrency": {
-					"type": "string"
-				},
-				"runningbalancecurrency": {
-					"type": "string"
-				},
-				"runningbalance": {
-					"type": "number"
-				},
-				"txnamount": {
-					"type": "number"
-				},
-				"txndescription": {
-					"type": "string"
-				}
-			}
-		},
 		"typeProperties": {
 			"collectionName": "txns100M"
 		}
