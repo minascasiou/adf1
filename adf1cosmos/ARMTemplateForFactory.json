@@ -540,7 +540,7 @@
 				"typeProperties": {
 					"location": {
 						"type": "AzureBlobStorageLocation",
-						"fileName": "fintxns1M_v4.csv",
+						"fileName": "fintxns10M_v4.csv",
 						"container": "wow"
 					},
 					"columnDelimiter": ",",
