@@ -19,7 +19,7 @@
 					"source": {
 						"type": "DelimitedTextSource",
 						"storeSettings": {
-							"type": "AzureFileStorageReadSettings",
+							"type": "AzureBlobStorageReadSettings",
 							"recursive": true
 						},
 						"formatSettings": {
@@ -37,7 +37,7 @@
 							{
 								"source": {
 									"name": "txnid",
-									"type": "Int64"
+									"type": "String"
 								},
 								"sink": {
 									"path": "$['id']"
@@ -63,7 +63,7 @@
 							},
 							{
 								"source": {
-									"name": "category",
+									"name": "categoryl1",
 									"type": "String"
 								},
 								"sink": {
@@ -109,7 +109,7 @@
 							{
 								"source": {
 									"name": "runningbalance",
-									"type": "Double"
+									"type": "String"
 								},
 								"sink": {
 									"path": "$['runningbalance']"
@@ -118,7 +118,7 @@
 							{
 								"source": {
 									"name": "txnamount",
-									"type": "Double"
+									"type": "String"
 								},
 								"sink": {
 									"path": "$['txnamount']"
@@ -132,13 +132,58 @@
 								"sink": {
 									"path": "$['txndescription']"
 								}
+							},
+							{
+								"source": {
+									"name": "creationdateyyyymm",
+									"type": "String"
+								},
+								"sink": {
+									"path": "$['creationdateyyyymm']"
+								}
+							},
+							{
+								"source": {
+									"name": "categoryl1",
+									"type": "String"
+								},
+								"sink": {
+									"path": "$['categoryl1']"
+								}
+							},
+							{
+								"source": {
+									"name": "categoryl2",
+									"type": "String"
+								},
+								"sink": {
+									"path": "$['categoryl2']"
+								}
+							},
+							{
+								"source": {
+									"name": "categoryl3",
+									"type": "String"
+								},
+								"sink": {
+									"path": "$['categoryl3']"
+								}
+							},
+							{
+								"source": {
+									"name": "merchantID",
+									"type": "String"
+								},
+								"sink": {
+									"path": "$['merchantID']"
+								}
 							}
 						]
 					}
 				},
 				"inputs": [
 					{
-						"referenceName": "DelimitedText1",
+						"referenceName": "DelimitedText2",
 						"type": "DatasetReference"
 					}
 				],
