@@ -46,7 +46,7 @@
 			}
 		},
 		"typeProperties": {
-			"collectionName": "txns10m"
+			"collectionName": "txns100M"
 		}
 	}
 }
