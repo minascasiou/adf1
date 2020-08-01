@@ -578,7 +578,73 @@
 				},
 				"annotations": [],
 				"type": "AzureSqlTable",
-				"schema": [],
+				"schema": [
+					{
+						"name": "txnid",
+						"type": "bigint",
+						"precision": 19
+					},
+					{
+						"name": "customerid",
+						"type": "nvarchar"
+					},
+					{
+						"name": "accountid",
+						"type": "nvarchar"
+					},
+					{
+						"name": "creationdate",
+						"type": "nvarchar"
+					},
+					{
+						"name": "creationdateyyyymm",
+						"type": "nvarchar"
+					},
+					{
+						"name": "creationdatetime",
+						"type": "nvarchar"
+					},
+					{
+						"name": "txnamountcurrency",
+						"type": "nvarchar"
+					},
+					{
+						"name": "txnamount",
+						"type": "decimal",
+						"precision": 38,
+						"scale": 18
+					},
+					{
+						"name": "runningbalancecurrency",
+						"type": "nvarchar"
+					},
+					{
+						"name": "runningbalance",
+						"type": "decimal",
+						"precision": 38,
+						"scale": 18
+					},
+					{
+						"name": "categoryl1",
+						"type": "nvarchar"
+					},
+					{
+						"name": "categoryl2",
+						"type": "nvarchar"
+					},
+					{
+						"name": "categoryl3",
+						"type": "nvarchar"
+					},
+					{
+						"name": "txndescription",
+						"type": "nvarchar"
+					},
+					{
+						"name": "merchantID",
+						"type": "nvarchar"
+					}
+				],
 				"typeProperties": {
 					"schema": "wow",
 					"table": "txns"
@@ -619,7 +685,9 @@
 							},
 							"sink": {
 								"type": "AzureSqlSink",
-								"tableOption": "autoCreate"
+								"preCopyScript": "DROP TABLE wow.txns ;",
+								"tableOption": "autoCreate",
+								"disableMetricsCollection": false
 							},
 							"enableStaging": false,
 							"translator": {
