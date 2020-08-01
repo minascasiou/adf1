@@ -804,7 +804,7 @@
 					}
 				},
 				"typeProperties": {
-					"collectionName": "txns100M2"
+					"collectionName": "txns100M3"
 				}
 			},
 			"dependsOn": [
