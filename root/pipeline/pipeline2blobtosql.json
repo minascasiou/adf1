@@ -27,7 +27,6 @@
 					},
 					"sink": {
 						"type": "AzureSqlSink",
-						"preCopyScript": "DROP TABLE wow.txns ;",
 						"tableOption": "autoCreate",
 						"disableMetricsCollection": false
 					},
