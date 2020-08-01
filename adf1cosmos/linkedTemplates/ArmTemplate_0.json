@@ -319,7 +319,7 @@
 				],
 				"typeProperties": {
 					"schema": "wow",
-					"table": "txns2"
+					"table": "txns"
 				}
 			},
 			"dependsOn": [
@@ -685,7 +685,6 @@
 							},
 							"sink": {
 								"type": "AzureSqlSink",
-								"preCopyScript": "DROP TABLE wow.txns ;",
 								"tableOption": "autoCreate",
 								"disableMetricsCollection": false
 							},

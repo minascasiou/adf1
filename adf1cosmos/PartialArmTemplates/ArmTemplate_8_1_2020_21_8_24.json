@@ -1,0 +1,332 @@
+{
+	"$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+	"contentVersion": "1.0.0.0",
+	"parameters": {
+		"factoryName": {
+			"type": "string",
+			"metadata": "Data Factory name",
+			"defaultValue": "adf1cosmos"
+		}
+	},
+	"variables": {
+		"factoryId": "[concat('Microsoft.DataFactory/factories/', parameters('factoryName'))]"
+	},
+	"resources": [
+		{
+			"name": "[concat(parameters('factoryName'), '/AzureSqlTable1')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "AzureSqlDatabase1",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "AzureSqlTable",
+				"schema": [
+					{
+						"name": "txnid",
+						"type": "bigint",
+						"precision": 19
+					},
+					{
+						"name": "customerid",
+						"type": "nvarchar"
+					},
+					{
+						"name": "accountid",
+						"type": "nvarchar"
+					},
+					{
+						"name": "creationdate",
+						"type": "nvarchar"
+					},
+					{
+						"name": "creationdateyyyymm",
+						"type": "nvarchar"
+					},
+					{
+						"name": "creationdatetime",
+						"type": "nvarchar"
+					},
+					{
+						"name": "txnamountcurrency",
+						"type": "nvarchar"
+					},
+					{
+						"name": "txnamount",
+						"type": "decimal",
+						"precision": 38,
+						"scale": 18
+					},
+					{
+						"name": "runningbalancecurrency",
+						"type": "nvarchar"
+					},
+					{
+						"name": "runningbalance",
+						"type": "decimal",
+						"precision": 38,
+						"scale": 18
+					},
+					{
+						"name": "categoryl1",
+						"type": "nvarchar"
+					},
+					{
+						"name": "categoryl2",
+						"type": "nvarchar"
+					},
+					{
+						"name": "categoryl3",
+						"type": "nvarchar"
+					},
+					{
+						"name": "txndescription",
+						"type": "nvarchar"
+					},
+					{
+						"name": "merchantID",
+						"type": "nvarchar"
+					}
+				],
+				"typeProperties": {
+					"schema": "wow",
+					"table": "txns"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/pipeline2blobtosql')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "Copy data1",
+						"type": "Copy",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "DelimitedTextSource",
+								"storeSettings": {
+									"type": "AzureBlobStorageReadSettings",
+									"recursive": true
+								},
+								"formatSettings": {
+									"type": "DelimitedTextReadSettings"
+								}
+							},
+							"sink": {
+								"type": "AzureSqlSink",
+								"tableOption": "autoCreate",
+								"disableMetricsCollection": false
+							},
+							"enableStaging": false,
+							"translator": {
+								"type": "TabularTranslator",
+								"mappings": [
+									{
+										"source": {
+											"name": "txnid",
+											"type": "Int64",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "txnid",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "customerid",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "customerid",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "accountid",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "accountid",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "creationdate",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "creationdate",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "creationdateyyyymm",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "creationdateyyyymm",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "creationdatetime",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "creationdatetime",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "txnamountcurrency",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "txnamountcurrency",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "txnamount",
+											"type": "Decimal",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "txnamount",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "runningbalancecurrency",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "runningbalancecurrency",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "runningbalance",
+											"type": "Decimal",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "runningbalance",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "categoryl1",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "categoryl1",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "categoryl2",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "categoryl2",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "categoryl3",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "categoryl3",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "txndescription",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "txndescription",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "merchantID",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "merchantID",
+											"type": "String"
+										}
+									}
+								],
+								"typeConversion": true,
+								"typeConversionSettings": {
+									"allowDataTruncation": true,
+									"treatBooleanAsNumber": false
+								}
+							}
+						},
+						"inputs": [
+							{
+								"referenceName": "DelimitedText2",
+								"type": "DatasetReference"
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "AzureSqlTable1",
+								"type": "DatasetReference"
+							}
+						]
+					}
+				],
+				"annotations": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/AzureSqlTable1')]"
+			]
+		}
+	]
+}
