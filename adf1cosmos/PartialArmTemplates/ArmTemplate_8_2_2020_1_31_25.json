@@ -1,0 +1,298 @@
+{
+	"$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+	"contentVersion": "1.0.0.0",
+	"parameters": {
+		"factoryName": {
+			"type": "string",
+			"metadata": "Data Factory name",
+			"defaultValue": "adf1cosmos"
+		}
+	},
+	"variables": {
+		"factoryId": "[concat('Microsoft.DataFactory/factories/', parameters('factoryName'))]"
+	},
+	"resources": [
+		{
+			"name": "[concat(parameters('factoryName'), '/pipeline1')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"description": "import csv 1k into Cosmos SQL as JSON document\nHaNeCan Finance SQL Container",
+				"activities": [
+					{
+						"name": "Copy data to Cosmos 2",
+						"type": "Copy",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "DelimitedTextSource",
+								"storeSettings": {
+									"type": "AzureBlobStorageReadSettings",
+									"recursive": true
+								},
+								"formatSettings": {
+									"type": "DelimitedTextReadSettings",
+									"skipLineCount": 0
+								}
+							},
+							"sink": {
+								"type": "CosmosDbSqlApiSink",
+								"writeBehavior": "insert"
+							},
+							"enableStaging": false,
+							"translator": {
+								"type": "TabularTranslator",
+								"mappings": [
+									{
+										"source": {
+											"name": "txnid",
+											"type": "String"
+										},
+										"sink": {
+											"path": "$['id']"
+										}
+									},
+									{
+										"source": {
+											"name": "customerid",
+											"type": "String"
+										},
+										"sink": {
+											"path": "$['customerid']"
+										}
+									},
+									{
+										"source": {
+											"name": "accountid",
+											"type": "String"
+										},
+										"sink": {
+											"path": "$['accountid']"
+										}
+									},
+									{
+										"source": {
+											"name": "categoryl1",
+											"type": "String"
+										},
+										"sink": {
+											"path": "$['categoryl1']"
+										}
+									},
+									{
+										"source": {
+											"name": "categoryl2",
+											"type": "String"
+										},
+										"sink": {
+											"path": "$['categoryl2']"
+										}
+									},
+									{
+										"source": {
+											"name": "categoryl3",
+											"type": "String"
+										},
+										"sink": {
+											"path": "$['categoryl3']"
+										}
+									},
+									{
+										"source": {
+											"name": "creationdate",
+											"type": "String"
+										},
+										"sink": {
+											"path": "$['creationdate']"
+										}
+									},
+									{
+										"source": {
+											"name": "creationdateyyyymm",
+											"type": "String"
+										},
+										"sink": {
+											"path": "$['creationdateyyyymm']"
+										}
+									},
+									{
+										"source": {
+											"name": "creationdatetime",
+											"type": "String"
+										},
+										"sink": {
+											"path": "$['creationdatetime']"
+										}
+									},
+									{
+										"source": {
+											"name": "txnamountcurrency",
+											"type": "String"
+										},
+										"sink": {
+											"path": "$['txnamountcurrency']"
+										}
+									},
+									{
+										"source": {
+											"name": "runningbalancecurrency",
+											"type": "String"
+										},
+										"sink": {
+											"path": "$['runningbalancecurrency']"
+										}
+									},
+									{
+										"source": {
+											"name": "runningbalance",
+											"type": "String"
+										},
+										"sink": {
+											"path": "$['runningbalance']"
+										}
+									},
+									{
+										"source": {
+											"name": "txnamount",
+											"type": "String"
+										},
+										"sink": {
+											"path": "$['txnamount']"
+										}
+									},
+									{
+										"source": {
+											"name": "merchantID",
+											"type": "String"
+										},
+										"sink": {
+											"path": "$['merchantid']"
+										}
+									},
+									{
+										"source": {
+											"name": "txndescription",
+											"type": "String"
+										},
+										"sink": {
+											"path": "$['txndescription']"
+										}
+									}
+								]
+							}
+						},
+						"inputs": [
+							{
+								"referenceName": "DelimitedText2",
+								"type": "DatasetReference"
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "CosmosDbSqlApiCollection2",
+								"type": "DatasetReference"
+							}
+						]
+					}
+				],
+				"concurrency": 1,
+				"annotations": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/CosmosDbSqlApiCollection2')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/CosmosDbSqlApiCollection1')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "CosmosDb1",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "CosmosDbSqlApiCollection",
+				"typeProperties": {
+					"collectionName": "txns100M"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/CosmosDbSqlApiCollection2')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "CosmosDb1",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "CosmosDbSqlApiCollection",
+				"schema": {
+					"type": "object",
+					"properties": {
+						"txnid": {
+							"type": "integer"
+						},
+						"customerid": {
+							"type": "string"
+						},
+						"accountid": {
+							"type": "string"
+						},
+						"categoryl1": {
+							"type": "string"
+						},
+						"categoryl2": {
+							"type": "string"
+						},
+						"categoryl3": {
+							"type": "string"
+						},
+						"creationdate": {
+							"type": "string"
+						},
+						"creationdateyyyymm": {
+							"type": "string"
+						},
+						"creationdatetime": {
+							"type": "string"
+						},
+						"txnamountcurrency": {
+							"type": "string"
+						},
+						"runningbalancecurrency": {
+							"type": "string"
+						},
+						"runningbalance": {
+							"type": "number"
+						},
+						"txnamount": {
+							"type": "number"
+						},
+						"merchantid": {
+							"type": "string"
+						},
+						"txndescription": {
+							"type": "string"
+						}
+					}
+				},
+				"typeProperties": {
+					"collectionName": "txns100M"
+				}
+			},
+			"dependsOn": []
+		}
+	]
+}

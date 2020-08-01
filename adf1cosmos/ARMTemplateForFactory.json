@@ -7,21 +7,21 @@
 			"metadata": "Data Factory name",
 			"defaultValue": "adf1cosmos"
 		},
-		"AzureFileStorage1_password": {
-			"type": "secureString",
-			"metadata": "Secure string for 'password' of 'AzureFileStorage1'"
-		},
-		"CosmosDb1_connectionString": {
-			"type": "secureString",
-			"metadata": "Secure string for 'connectionString' of 'CosmosDb1'"
-		},
 		"AzureBlobStorage1_connectionString": {
 			"type": "secureString",
 			"metadata": "Secure string for 'connectionString' of 'AzureBlobStorage1'"
 		},
+		"AzureFileStorage1_password": {
+			"type": "secureString",
+			"metadata": "Secure string for 'password' of 'AzureFileStorage1'"
+		},
 		"AzureSqlDatabase1_connectionString": {
 			"type": "secureString",
 			"metadata": "Secure string for 'connectionString' of 'AzureSqlDatabase1'"
+		},
+		"CosmosDb1_connectionString": {
+			"type": "secureString",
+			"metadata": "Secure string for 'connectionString' of 'CosmosDb1'"
 		},
 		"AzureFileStorage1_properties_typeProperties_host": {
 			"type": "string",
@@ -44,7 +44,7 @@
 				"description": "import csv 1k into Cosmos SQL as JSON document\nHaNeCan Finance SQL Container",
 				"activities": [
 					{
-						"name": "Copy data1",
+						"name": "Copy data to Cosmos 2",
 						"type": "Copy",
 						"dependsOn": [],
 						"policy": {
@@ -59,11 +59,12 @@
 							"source": {
 								"type": "DelimitedTextSource",
 								"storeSettings": {
-									"type": "AzureFileStorageReadSettings",
+									"type": "AzureBlobStorageReadSettings",
 									"recursive": true
 								},
 								"formatSettings": {
-									"type": "DelimitedTextReadSettings"
+									"type": "DelimitedTextReadSettings",
+									"skipLineCount": 0
 								}
 							},
 							"sink": {
@@ -77,7 +78,7 @@
 									{
 										"source": {
 											"name": "txnid",
-											"type": "Int64"
+											"type": "String"
 										},
 										"sink": {
 											"path": "$['id']"
@@ -103,11 +104,29 @@
 									},
 									{
 										"source": {
-											"name": "category",
+											"name": "categoryl1",
 											"type": "String"
 										},
 										"sink": {
-											"path": "$['category']"
+											"path": "$['categoryl1']"
+										}
+									},
+									{
+										"source": {
+											"name": "categoryl2",
+											"type": "String"
+										},
+										"sink": {
+											"path": "$['categoryl2']"
+										}
+									},
+									{
+										"source": {
+											"name": "categoryl3",
+											"type": "String"
+										},
+										"sink": {
+											"path": "$['categoryl3']"
 										}
 									},
 									{
@@ -117,6 +136,15 @@
 										},
 										"sink": {
 											"path": "$['creationdate']"
+										}
+									},
+									{
+										"source": {
+											"name": "creationdateyyyymm",
+											"type": "String"
+										},
+										"sink": {
+											"path": "$['creationdateyyyymm']"
 										}
 									},
 									{
@@ -149,7 +177,7 @@
 									{
 										"source": {
 											"name": "runningbalance",
-											"type": "Double"
+											"type": "String"
 										},
 										"sink": {
 											"path": "$['runningbalance']"
@@ -158,10 +186,19 @@
 									{
 										"source": {
 											"name": "txnamount",
-											"type": "Double"
+											"type": "String"
 										},
 										"sink": {
 											"path": "$['txnamount']"
+										}
+									},
+									{
+										"source": {
+											"name": "merchantID",
+											"type": "String"
+										},
+										"sink": {
+											"path": "$['merchantid']"
 										}
 									},
 									{
@@ -178,14 +215,14 @@
 						},
 						"inputs": [
 							{
-								"referenceName": "DelimitedText1",
+								"referenceName": "DelimitedText2",
 								"type": "DatasetReference",
 								"parameters": {}
 							}
 						],
 						"outputs": [
 							{
-								"referenceName": "CosmosDbSqlApiCollection1",
+								"referenceName": "CosmosDbSqlApiCollection2",
 								"type": "DatasetReference",
 								"parameters": {}
 							}
@@ -196,8 +233,8 @@
 				"annotations": []
 			},
 			"dependsOn": [
-				"[concat(variables('factoryId'), '/datasets/DelimitedText1')]",
-				"[concat(variables('factoryId'), '/datasets/CosmosDbSqlApiCollection1')]"
+				"[concat(variables('factoryId'), '/datasets/DelimitedText2')]",
+				"[concat(variables('factoryId'), '/datasets/CosmosDbSqlApiCollection2')]"
 			]
 		},
 		{
@@ -362,296 +399,6 @@
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/datasets/DelimitedText1')]",
 				"[concat(variables('factoryId'), '/datasets/CosmosDbSqlApiCollection1')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/CosmosDbSqlApiCollection1')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "CosmosDb1",
-					"type": "LinkedServiceReference"
-				},
-				"annotations": [],
-				"type": "CosmosDbSqlApiCollection",
-				"schema": {
-					"type": "object",
-					"properties": {
-						"txnid": {
-							"type": "integer"
-						},
-						"customerid": {
-							"type": "string"
-						},
-						"accountid": {
-							"type": "string"
-						},
-						"category": {
-							"type": "string"
-						},
-						"creationdate": {
-							"type": "integer"
-						},
-						"creationdatetime": {
-							"type": "string"
-						},
-						"txnamountcurrency": {
-							"type": "string"
-						},
-						"runningbalancecurrency": {
-							"type": "string"
-						},
-						"runningbalance": {
-							"type": "number"
-						},
-						"txnamount": {
-							"type": "number"
-						},
-						"txndescription": {
-							"type": "string"
-						}
-					}
-				},
-				"typeProperties": {
-					"collectionName": "txns10m"
-				}
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/CosmosDb1')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/DelimitedText1')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "AzureFileStorage1",
-					"type": "LinkedServiceReference"
-				},
-				"annotations": [],
-				"type": "DelimitedText",
-				"typeProperties": {
-					"location": {
-						"type": "AzureFileStorageLocation",
-						"fileName": "fintxns10M.csv"
-					},
-					"columnDelimiter": ",",
-					"escapeChar": "\\",
-					"firstRowAsHeader": true,
-					"quoteChar": "\""
-				},
-				"schema": [
-					{
-						"type": "String"
-					},
-					{
-						"type": "String"
-					},
-					{
-						"type": "String"
-					},
-					{
-						"type": "String"
-					},
-					{
-						"type": "String"
-					},
-					{
-						"type": "String"
-					},
-					{
-						"type": "String"
-					},
-					{
-						"type": "String"
-					},
-					{
-						"type": "String"
-					},
-					{
-						"type": "String"
-					},
-					{
-						"type": "String"
-					}
-				]
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/AzureFileStorage1')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/AzureFileStorage1')]",
-			"type": "Microsoft.DataFactory/factories/linkedServices",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"annotations": [],
-				"type": "AzureFileStorage",
-				"typeProperties": {
-					"host": "[parameters('AzureFileStorage1_properties_typeProperties_host')]",
-					"userId": "[parameters('AzureFileStorage1_properties_typeProperties_userId')]",
-					"password": {
-						"type": "SecureString",
-						"value": "[parameters('AzureFileStorage1_password')]"
-					}
-				}
-			},
-			"dependsOn": []
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/CosmosDb1')]",
-			"type": "Microsoft.DataFactory/factories/linkedServices",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"annotations": [],
-				"type": "CosmosDb",
-				"typeProperties": {
-					"connectionString": "[parameters('CosmosDb1_connectionString')]"
-				}
-			},
-			"dependsOn": []
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/AzureBlobStorage1')]",
-			"type": "Microsoft.DataFactory/factories/linkedServices",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"annotations": [],
-				"type": "AzureBlobStorage",
-				"typeProperties": {
-					"connectionString": "[parameters('AzureBlobStorage1_connectionString')]"
-				}
-			},
-			"dependsOn": []
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/DelimitedText2')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "AzureBlobStorage1",
-					"type": "LinkedServiceReference"
-				},
-				"annotations": [],
-				"type": "DelimitedText",
-				"typeProperties": {
-					"location": {
-						"type": "AzureBlobStorageLocation",
-						"fileName": "fintxns100M_v4.csv",
-						"container": "wow"
-					},
-					"columnDelimiter": ",",
-					"escapeChar": "\\",
-					"firstRowAsHeader": true,
-					"quoteChar": "\""
-				},
-				"schema": []
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/AzureBlobStorage1')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/AzureSqlDatabase1')]",
-			"type": "Microsoft.DataFactory/factories/linkedServices",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"annotations": [],
-				"type": "AzureSqlDatabase",
-				"typeProperties": {
-					"connectionString": "[parameters('AzureSqlDatabase1_connectionString')]"
-				}
-			},
-			"dependsOn": []
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/AzureSqlTable1')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "AzureSqlDatabase1",
-					"type": "LinkedServiceReference"
-				},
-				"annotations": [],
-				"type": "AzureSqlTable",
-				"schema": [
-					{
-						"name": "txnid",
-						"type": "bigint",
-						"precision": 19
-					},
-					{
-						"name": "customerid",
-						"type": "nvarchar"
-					},
-					{
-						"name": "accountid",
-						"type": "nvarchar"
-					},
-					{
-						"name": "creationdate",
-						"type": "nvarchar"
-					},
-					{
-						"name": "creationdateyyyymm",
-						"type": "nvarchar"
-					},
-					{
-						"name": "creationdatetime",
-						"type": "nvarchar"
-					},
-					{
-						"name": "txnamountcurrency",
-						"type": "nvarchar"
-					},
-					{
-						"name": "txnamount",
-						"type": "decimal",
-						"precision": 38,
-						"scale": 18
-					},
-					{
-						"name": "runningbalancecurrency",
-						"type": "nvarchar"
-					},
-					{
-						"name": "runningbalance",
-						"type": "decimal",
-						"precision": 38,
-						"scale": 18
-					},
-					{
-						"name": "categoryl1",
-						"type": "nvarchar"
-					},
-					{
-						"name": "categoryl2",
-						"type": "nvarchar"
-					},
-					{
-						"name": "categoryl3",
-						"type": "nvarchar"
-					},
-					{
-						"name": "txndescription",
-						"type": "nvarchar"
-					},
-					{
-						"name": "merchantID",
-						"type": "nvarchar"
-					}
-				],
-				"typeProperties": {
-					"schema": "wow",
-					"table": "txns"
-				}
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/AzureSqlDatabase1')]"
 			]
 		},
 		{
@@ -887,6 +634,328 @@
 				"[concat(variables('factoryId'), '/datasets/DelimitedText2')]",
 				"[concat(variables('factoryId'), '/datasets/AzureSqlTable1')]"
 			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/AzureSqlTable1')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "AzureSqlDatabase1",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "AzureSqlTable",
+				"schema": [
+					{
+						"name": "txnid",
+						"type": "bigint",
+						"precision": 19
+					},
+					{
+						"name": "customerid",
+						"type": "nvarchar"
+					},
+					{
+						"name": "accountid",
+						"type": "nvarchar"
+					},
+					{
+						"name": "creationdate",
+						"type": "nvarchar"
+					},
+					{
+						"name": "creationdateyyyymm",
+						"type": "nvarchar"
+					},
+					{
+						"name": "creationdatetime",
+						"type": "nvarchar"
+					},
+					{
+						"name": "txnamountcurrency",
+						"type": "nvarchar"
+					},
+					{
+						"name": "txnamount",
+						"type": "decimal",
+						"precision": 38,
+						"scale": 18
+					},
+					{
+						"name": "runningbalancecurrency",
+						"type": "nvarchar"
+					},
+					{
+						"name": "runningbalance",
+						"type": "decimal",
+						"precision": 38,
+						"scale": 18
+					},
+					{
+						"name": "categoryl1",
+						"type": "nvarchar"
+					},
+					{
+						"name": "categoryl2",
+						"type": "nvarchar"
+					},
+					{
+						"name": "categoryl3",
+						"type": "nvarchar"
+					},
+					{
+						"name": "txndescription",
+						"type": "nvarchar"
+					},
+					{
+						"name": "merchantID",
+						"type": "nvarchar"
+					}
+				],
+				"typeProperties": {
+					"schema": "wow",
+					"table": "txns"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/AzureSqlDatabase1')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/CosmosDbSqlApiCollection1')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "CosmosDb1",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "CosmosDbSqlApiCollection",
+				"schema": {},
+				"typeProperties": {
+					"collectionName": "txns100M"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/CosmosDb1')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/CosmosDbSqlApiCollection2')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "CosmosDb1",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "CosmosDbSqlApiCollection",
+				"schema": {
+					"type": "object",
+					"properties": {
+						"txnid": {
+							"type": "integer"
+						},
+						"customerid": {
+							"type": "string"
+						},
+						"accountid": {
+							"type": "string"
+						},
+						"categoryl1": {
+							"type": "string"
+						},
+						"categoryl2": {
+							"type": "string"
+						},
+						"categoryl3": {
+							"type": "string"
+						},
+						"creationdate": {
+							"type": "string"
+						},
+						"creationdateyyyymm": {
+							"type": "string"
+						},
+						"creationdatetime": {
+							"type": "string"
+						},
+						"txnamountcurrency": {
+							"type": "string"
+						},
+						"runningbalancecurrency": {
+							"type": "string"
+						},
+						"runningbalance": {
+							"type": "number"
+						},
+						"txnamount": {
+							"type": "number"
+						},
+						"merchantid": {
+							"type": "string"
+						},
+						"txndescription": {
+							"type": "string"
+						}
+					}
+				},
+				"typeProperties": {
+					"collectionName": "txns100M"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/CosmosDb1')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/DelimitedText1')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "AzureFileStorage1",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "DelimitedText",
+				"typeProperties": {
+					"location": {
+						"type": "AzureFileStorageLocation",
+						"fileName": "fintxns10M.csv"
+					},
+					"columnDelimiter": ",",
+					"escapeChar": "\\",
+					"firstRowAsHeader": true,
+					"quoteChar": "\""
+				},
+				"schema": [
+					{
+						"type": "String"
+					},
+					{
+						"type": "String"
+					},
+					{
+						"type": "String"
+					},
+					{
+						"type": "String"
+					},
+					{
+						"type": "String"
+					},
+					{
+						"type": "String"
+					},
+					{
+						"type": "String"
+					},
+					{
+						"type": "String"
+					},
+					{
+						"type": "String"
+					},
+					{
+						"type": "String"
+					},
+					{
+						"type": "String"
+					}
+				]
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/AzureFileStorage1')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/DelimitedText2')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "AzureBlobStorage1",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "DelimitedText",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobStorageLocation",
+						"fileName": "fintxns100M_v4.csv",
+						"container": "wow"
+					},
+					"columnDelimiter": ",",
+					"escapeChar": "\\",
+					"firstRowAsHeader": true,
+					"quoteChar": "\""
+				},
+				"schema": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/AzureBlobStorage1')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/AzureBlobStorage1')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "AzureBlobStorage",
+				"typeProperties": {
+					"connectionString": "[parameters('AzureBlobStorage1_connectionString')]"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/AzureFileStorage1')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "AzureFileStorage",
+				"typeProperties": {
+					"host": "[parameters('AzureFileStorage1_properties_typeProperties_host')]",
+					"userId": "[parameters('AzureFileStorage1_properties_typeProperties_userId')]",
+					"password": {
+						"type": "SecureString",
+						"value": "[parameters('AzureFileStorage1_password')]"
+					}
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/AzureSqlDatabase1')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "AzureSqlDatabase",
+				"typeProperties": {
+					"connectionString": "[parameters('AzureSqlDatabase1_connectionString')]"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/CosmosDb1')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "CosmosDb",
+				"typeProperties": {
+					"connectionString": "[parameters('CosmosDb1_connectionString')]"
+				}
+			},
+			"dependsOn": []
 		}
 	]
 }

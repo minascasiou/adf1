@@ -5,16 +5,16 @@
 		"factoryName": {
 			"value": "adf1cosmos"
 		},
-		"AzureFileStorage1_password": {
-			"value": ""
-		},
-		"CosmosDb1_connectionString": {
-			"value": ""
-		},
 		"AzureBlobStorage1_connectionString": {
 			"value": ""
 		},
+		"AzureFileStorage1_password": {
+			"value": ""
+		},
 		"AzureSqlDatabase1_connectionString": {
+			"value": ""
+		},
+		"CosmosDb1_connectionString": {
 			"value": ""
 		},
 		"AzureFileStorage1_properties_typeProperties_host": {
