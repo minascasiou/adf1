@@ -23,14 +23,25 @@
 							"recursive": true
 						},
 						"formatSettings": {
-							"type": "DelimitedTextReadSettings"
+							"type": "DelimitedTextReadSettings",
+							"skipLineCount": 1
 						}
 					},
 					"sink": {
 						"type": "CosmosDbSqlApiSink",
 						"writeBehavior": "insert"
 					},
-					"enableStaging": false
+					"enableStaging": false,
+					"translator": {
+						"type": "TabularTranslator",
+						"mappings": [
+							{
+								"sink": {
+									"path": "$"
+								}
+							}
+						]
+					}
 				},
 				"inputs": [
 					{
