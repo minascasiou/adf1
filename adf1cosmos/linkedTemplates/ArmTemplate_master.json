@@ -15,6 +15,14 @@
 			"type": "secureString",
 			"metadata": "Secure string for 'connectionString' of 'CosmosDb1'"
 		},
+		"AzureBlobStorage1_connectionString": {
+			"type": "secureString",
+			"metadata": "Secure string for 'connectionString' of 'AzureBlobStorage1'"
+		},
+		"AzureSqlDatabase1_connectionString": {
+			"type": "secureString",
+			"metadata": "Secure string for 'connectionString' of 'AzureSqlDatabase1'"
+		},
 		"AzureFileStorage1_properties_typeProperties_host": {
 			"type": "string",
 			"defaultValue": "\\\\adfsourcefincsv.file.core.windows.net\\fin"
@@ -55,6 +63,12 @@
 					},
 					"CosmosDb1_connectionString": {
 						"value": "[parameters('CosmosDb1_connectionString')]"
+					},
+					"AzureBlobStorage1_connectionString": {
+						"value": "[parameters('AzureBlobStorage1_connectionString')]"
+					},
+					"AzureSqlDatabase1_connectionString": {
+						"value": "[parameters('AzureSqlDatabase1_connectionString')]"
 					},
 					"AzureFileStorage1_properties_typeProperties_host": {
 						"value": "[parameters('AzureFileStorage1_properties_typeProperties_host')]"

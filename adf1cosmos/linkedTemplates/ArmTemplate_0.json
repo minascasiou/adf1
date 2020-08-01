@@ -15,6 +15,14 @@
 			"type": "secureString",
 			"metadata": "Secure string for 'connectionString' of 'CosmosDb1'"
 		},
+		"AzureBlobStorage1_connectionString": {
+			"type": "secureString",
+			"metadata": "Secure string for 'connectionString' of 'AzureBlobStorage1'"
+		},
+		"AzureSqlDatabase1_connectionString": {
+			"type": "secureString",
+			"metadata": "Secure string for 'connectionString' of 'AzureSqlDatabase1'"
+		},
 		"AzureFileStorage1_properties_typeProperties_host": {
 			"type": "string",
 			"defaultValue": "\\\\adfsourcefincsv.file.core.windows.net\\fin"
@@ -55,6 +63,32 @@
 				"type": "CosmosDb",
 				"typeProperties": {
 					"connectionString": "[parameters('CosmosDb1_connectionString')]"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/AzureBlobStorage1')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "AzureBlobStorage",
+				"typeProperties": {
+					"connectionString": "[parameters('AzureBlobStorage1_connectionString')]"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/AzureSqlDatabase1')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "AzureSqlDatabase",
+				"typeProperties": {
+					"connectionString": "[parameters('AzureSqlDatabase1_connectionString')]"
 				}
 			},
 			"dependsOn": []
@@ -175,6 +209,55 @@
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/linkedServices/AzureFileStorage1')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/DelimitedText2')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "AzureBlobStorage1",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "DelimitedText",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobStorageLocation",
+						"fileName": "fintxns1k_v4.csv",
+						"container": "wow"
+					},
+					"columnDelimiter": ",",
+					"escapeChar": "\\",
+					"firstRowAsHeader": true,
+					"quoteChar": "\""
+				},
+				"schema": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/AzureBlobStorage1')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/AzureSqlTable1')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "AzureSqlDatabase1",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "AzureSqlTable",
+				"schema": [],
+				"typeProperties": {
+					"schema": "wow",
+					"table": "txns"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/AzureSqlDatabase1')]"
 			]
 		},
 		{
@@ -339,6 +422,403 @@
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/datasets/DelimitedText1')]",
 				"[concat(variables('factoryId'), '/datasets/CosmosDbSqlApiCollection1')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/pipeline1_toAWSDynamoDB')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"description": "import csv 1k into AWS Dynamo DB",
+				"activities": [
+					{
+						"name": "Copy data1",
+						"type": "Copy",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "DelimitedTextSource",
+								"storeSettings": {
+									"type": "AzureFileStorageReadSettings",
+									"recursive": true
+								},
+								"formatSettings": {
+									"type": "DelimitedTextReadSettings"
+								}
+							},
+							"sink": {
+								"type": "CosmosDbSqlApiSink",
+								"writeBehavior": "insert"
+							},
+							"enableStaging": false,
+							"translator": {
+								"type": "TabularTranslator",
+								"mappings": [
+									{
+										"source": {
+											"name": "txnid",
+											"type": "Int64"
+										},
+										"sink": {
+											"path": "$['id']"
+										}
+									},
+									{
+										"source": {
+											"name": "customerid",
+											"type": "String"
+										},
+										"sink": {
+											"path": "$['customerid']"
+										}
+									},
+									{
+										"source": {
+											"name": "accountid",
+											"type": "String"
+										},
+										"sink": {
+											"path": "$['accountid']"
+										}
+									},
+									{
+										"source": {
+											"name": "category",
+											"type": "String"
+										},
+										"sink": {
+											"path": "$['category']"
+										}
+									},
+									{
+										"source": {
+											"name": "creationdate",
+											"type": "String"
+										},
+										"sink": {
+											"path": "$['creationdate']"
+										}
+									},
+									{
+										"source": {
+											"name": "creationdatetime",
+											"type": "String"
+										},
+										"sink": {
+											"path": "$['creationdatetime']"
+										}
+									},
+									{
+										"source": {
+											"name": "txnamountcurrency",
+											"type": "String"
+										},
+										"sink": {
+											"path": "$['txnamountcurrency']"
+										}
+									},
+									{
+										"source": {
+											"name": "runningbalancecurrency",
+											"type": "String"
+										},
+										"sink": {
+											"path": "$['runningbalancecurrency']"
+										}
+									},
+									{
+										"source": {
+											"name": "runningbalance",
+											"type": "Double"
+										},
+										"sink": {
+											"path": "$['runningbalance']"
+										}
+									},
+									{
+										"source": {
+											"name": "txnamount",
+											"type": "Double"
+										},
+										"sink": {
+											"path": "$['txnamount']"
+										}
+									},
+									{
+										"source": {
+											"name": "txndescription",
+											"type": "String"
+										},
+										"sink": {
+											"path": "$['txndescription']"
+										}
+									}
+								]
+							}
+						},
+						"inputs": [
+							{
+								"referenceName": "DelimitedText1",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "CosmosDbSqlApiCollection1",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						]
+					}
+				],
+				"concurrency": 1,
+				"annotations": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/DelimitedText1')]",
+				"[concat(variables('factoryId'), '/datasets/CosmosDbSqlApiCollection1')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/pipeline2blobtosql')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "Copy data1",
+						"type": "Copy",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "DelimitedTextSource",
+								"storeSettings": {
+									"type": "AzureBlobStorageReadSettings",
+									"recursive": true
+								},
+								"formatSettings": {
+									"type": "DelimitedTextReadSettings"
+								}
+							},
+							"sink": {
+								"type": "AzureSqlSink",
+								"tableOption": "autoCreate"
+							},
+							"enableStaging": false,
+							"translator": {
+								"type": "TabularTranslator",
+								"mappings": [
+									{
+										"source": {
+											"name": "txnid",
+											"type": "Int64",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "txnid",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "customerid",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "customerid",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "accountid",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "accountid",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "creationdate",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "creationdate",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "creationdateyyyymm",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "creationdateyyyymm",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "creationdatetime",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "creationdatetime",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "txnamountcurrency",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "txnamountcurrency",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "txnamount",
+											"type": "Decimal",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "txnamount",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "runningbalancecurrency",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "runningbalancecurrency",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "runningbalance",
+											"type": "Decimal",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "runningbalance",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "categoryl1",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "categoryl1",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "categoryl2",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "categoryl2",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "categoryl3",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "categoryl3",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "txndescription",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "txndescription",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "merchantID",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "merchantID",
+											"type": "String"
+										}
+									}
+								],
+								"typeConversion": true,
+								"typeConversionSettings": {
+									"allowDataTruncation": true,
+									"treatBooleanAsNumber": false
+								}
+							}
+						},
+						"inputs": [
+							{
+								"referenceName": "DelimitedText2",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "AzureSqlTable1",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						]
+					}
+				],
+				"annotations": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/DelimitedText2')]",
+				"[concat(variables('factoryId'), '/datasets/AzureSqlTable1')]"
 			]
 		}
 	]

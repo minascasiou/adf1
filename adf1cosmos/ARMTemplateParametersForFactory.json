@@ -11,6 +11,12 @@
 		"CosmosDb1_connectionString": {
 			"value": ""
 		},
+		"AzureBlobStorage1_connectionString": {
+			"value": ""
+		},
+		"AzureSqlDatabase1_connectionString": {
+			"value": ""
+		},
 		"AzureFileStorage1_properties_typeProperties_host": {
 			"value": "\\\\adfsourcefincsv.file.core.windows.net\\fin"
 		},
