@@ -319,7 +319,7 @@
 				],
 				"typeProperties": {
 					"schema": "wow",
-					"table": "txns"
+					"table": "txns2"
 				}
 			},
 			"dependsOn": [

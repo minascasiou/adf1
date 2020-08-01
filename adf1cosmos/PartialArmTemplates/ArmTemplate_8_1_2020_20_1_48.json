@@ -1,0 +1,101 @@
+{
+	"$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+	"contentVersion": "1.0.0.0",
+	"parameters": {
+		"factoryName": {
+			"type": "string",
+			"metadata": "Data Factory name",
+			"defaultValue": "adf1cosmos"
+		}
+	},
+	"variables": {
+		"factoryId": "[concat('Microsoft.DataFactory/factories/', parameters('factoryName'))]"
+	},
+	"resources": [
+		{
+			"name": "[concat(parameters('factoryName'), '/AzureSqlTable1')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "AzureSqlDatabase1",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "AzureSqlTable",
+				"schema": [
+					{
+						"name": "txnid",
+						"type": "bigint",
+						"precision": 19
+					},
+					{
+						"name": "customerid",
+						"type": "nvarchar"
+					},
+					{
+						"name": "accountid",
+						"type": "nvarchar"
+					},
+					{
+						"name": "creationdate",
+						"type": "nvarchar"
+					},
+					{
+						"name": "creationdateyyyymm",
+						"type": "nvarchar"
+					},
+					{
+						"name": "creationdatetime",
+						"type": "nvarchar"
+					},
+					{
+						"name": "txnamountcurrency",
+						"type": "nvarchar"
+					},
+					{
+						"name": "txnamount",
+						"type": "decimal",
+						"precision": 38,
+						"scale": 18
+					},
+					{
+						"name": "runningbalancecurrency",
+						"type": "nvarchar"
+					},
+					{
+						"name": "runningbalance",
+						"type": "decimal",
+						"precision": 38,
+						"scale": 18
+					},
+					{
+						"name": "categoryl1",
+						"type": "nvarchar"
+					},
+					{
+						"name": "categoryl2",
+						"type": "nvarchar"
+					},
+					{
+						"name": "categoryl3",
+						"type": "nvarchar"
+					},
+					{
+						"name": "txndescription",
+						"type": "nvarchar"
+					},
+					{
+						"name": "merchantID",
+						"type": "nvarchar"
+					}
+				],
+				"typeProperties": {
+					"schema": "wow",
+					"table": "txns2"
+				}
+			},
+			"dependsOn": []
+		}
+	]
+}
