@@ -1,0 +1,64 @@
+{
+	"name": "CosmosDbSqlApiCollection2",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "CosmosDb1",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "CosmosDbSqlApiCollection",
+		"schema": {
+			"type": "object",
+			"properties": {
+				"txnid": {
+					"type": "integer"
+				},
+				"customerid": {
+					"type": "string"
+				},
+				"accountid": {
+					"type": "string"
+				},
+				"categoryl1": {
+					"type": "string"
+				},
+				"categoryl2": {
+					"type": "string"
+				},
+				"categoryl3": {
+					"type": "string"
+				},
+				"creationdate": {
+					"type": "string"
+				},
+				"creationdateyyyymm": {
+					"type": "string"
+				},
+				"creationdatetime": {
+					"type": "string"
+				},
+				"txnamountcurrency": {
+					"type": "string"
+				},
+				"runningbalancecurrency": {
+					"type": "string"
+				},
+				"runningbalance": {
+					"type": "number"
+				},
+				"txnamount": {
+					"type": "number"
+				},
+				"merchantid": {
+					"type": "string"
+				},
+				"txndescription": {
+					"type": "string"
+				}
+			}
+		},
+		"typeProperties": {
+			"collectionName": "txns100M"
+		}
+	}
+}
